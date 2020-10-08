@@ -18,12 +18,11 @@ import java.util.function.Predicate;
 public class DobbeltLenketListe<T> implements Liste<T> {
     public static void main(String[] args){
 
-        Liste<String> liste = new DobbeltLenketListe<>();
-        System.out.println(liste.antall() + " " + liste.tom());
     }
 
     /**
      * Node class
+     *
      * @param <T>
      */
     private static final class Node<T> {
@@ -56,23 +55,37 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     public DobbeltLenketListe(T[] a) {
         this(); //Bruker konstruktøren over
+        Objects.requireNonNull(a, "Tabellen inneholder null-verdier!"); //tabellen a kan ikke være null
 
-        Objects.requireNonNull(a,"Tabellen inneholder null-verdier!"); //tabellen a kan ikke være null
-
-        if(a.length != 0){     //Hva skjer dersom tabellen er tom? Sjekk-> loop gjennom
+        if (a.length != 0) {     //Dersom tabellen er tom? Sjekk-> loop gjennom
             // looper gjennom tabellen for å finne ikke-nullverdi
             //
-            for(int i=0; i<a.length && a[i] == null; i++){
+            int i = 0;
+            for(; i < a.length && a[i] == null; i++);
                 //returnerer tom tabell, dersom den finner bare null-verdier
-                if(i == a.length){
-                    return;
+                if (i == a.length) return;
+
+            Node<T> p = hode = new Node<>(a[i], null, null);
+            antall = 1;
+
+            for (i++; i < a.length; i++) {
+                if (a[i] != null) {
+                    p = p.neste = new Node<>(a[i], p, null);
+                    antall++; //øker med antall for hver ny node
                 }
-
             }
+            hale = p;
 
-
+            /*while(a[i] != null){
+                    nyNode = nyNode.neste = new Node<>(a[i], nyNode, null);
+                    antall++; //øker med antall for hver ny node
+                    break;
+            }*/
         }
-        //Lage en dobbeltlenketliste med verdiene fra tabellen a
+    }
+
+
+    //Lage en dobbeltlenketliste med verdiene fra tabellen a
         /*
             Krav-> Tabell kan ikke:
                 være tom-> kaste exception
@@ -98,7 +111,8 @@ public class DobbeltLenketListe<T> implements Liste<T> {
          */
 
 
-    }
+
+
 
     public Liste<T> subliste(int fra, int til){
         throw new UnsupportedOperationException();
@@ -164,11 +178,20 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public String toString() {
-        throw new UnsupportedOperationException();
+        //Definerer en Stringjoiner, for å klare å skille mellom tegnene, få det i denne formatet [,]
+
+
+        //Loope gjennom alle nodene som er forskjellige fra null-> add en node med teksformatet over
+
+        //returner Stringbuilderen tilslutt
+
     }
 
     public String omvendtString() {
-        throw new UnsupportedOperationException();
+        //For å travarsere arrayet er jeg litt usikker, men jeg antar å å bruke samme format som i String toString() metoden, bare bytte om litt på rekkefølge
+        
+        //Bytte om på neste og forrige, så man går baklengs, i motsetning til forlengs
+
     }
 
     @Override
@@ -217,4 +240,6 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         throw new UnsupportedOperationException();
     }
 
-} // class DobbeltLenketListe
+
+// class DobbeltLenketListe
+}
