@@ -48,14 +48,30 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     private int endringer;         // antall endringer i listen
 
     public DobbeltLenketListe() {
-        hode = null;
-        hale = null;
+        hode = hale = null;
         endringer = 0;
         antall = 0;
 
     }
 
     public DobbeltLenketListe(T[] a) {
+        this(); //Bruker konstruktøren over
+
+        Objects.requireNonNull(a,"Tabellen inneholder null-verdier!"); //tabellen a kan ikke være null
+
+        if(a.length != 0){     //Hva skjer dersom tabellen er tom? Sjekk-> loop gjennom
+            // looper gjennom tabellen for å finne ikke-nullverdi
+            //
+            for(int i=0; i<a.length && a[i] == null; i++){
+                //returnerer tom tabell, dersom den finner bare null-verdier
+                if(i == a.length){
+                    return;
+                }
+
+            }
+
+
+        }
         //Lage en dobbeltlenketliste med verdiene fra tabellen a
         /*
             Krav-> Tabell kan ikke:
@@ -66,9 +82,18 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             tom-> kaste
          */
 
+
+
         /*
             Sette hode først (previous må være null) og hale sist (neste må være null) VIKTIG
-            
+            Node<T> forste = hode = new Node<>
+
+            tom tabell -> hode == hale == null
+
+
+            Løp gjennom tabell og legg inn ikke-nullverdier i nodene-> øk antallet med en hver gang
+
+
 
          */
 
