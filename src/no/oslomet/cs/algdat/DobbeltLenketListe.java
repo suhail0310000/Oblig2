@@ -17,13 +17,14 @@ import java.util.function.Predicate;
 
 public class DobbeltLenketListe<T> implements Liste<T> {
     public static void main(String[] args){
-        String[] s1 = {}, s2 = {"A"}, s3 = {null,"A",null,"B",null};
-        DobbeltLenketListe<String> l1 = new DobbeltLenketListe<>(s1);
-        DobbeltLenketListe<String> l2 = new DobbeltLenketListe<>(s2);
-        DobbeltLenketListe<String> l3 = new DobbeltLenketListe<>(s3);
-        System.out.println(l1.toString() + " " + l2.toString()
-                + " " + l3.toString() + " " + l1.omvendtString() + " "
-                + l2.omvendtString() + " " + l3.omvendtString());
+        DobbeltLenketListe<Integer> liste = new DobbeltLenketListe<>();
+        System.out.println(liste.toString() + " " + liste.omvendtString());
+        for (int i = 1; i <= 3; i++)
+        {
+            liste.leggInn(i);
+            System.out.println(liste.toString() + " " + liste.omvendtString());
+        }
+
 
     }
 
@@ -74,7 +75,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         this(); //Bruker konstruktøren over-> nullstiller
         Objects.requireNonNull(a, "Tabellen inneholder null-verdier!"); //tabellen a kan ikke være null
 
-        if (a.length != 0) {     //Dersom tabellen er tom? Sjekk-> loop gjennom
+        if (a.length != 0) {     //Dersom tabellen ikke er tom? Sjekk-> loop gjennom
             // looper gjennom tabellen for å finne ikke-nullverdi
             //
             int i = 0;
@@ -116,7 +117,10 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public boolean leggInn(T verdi) {
-        Objects.requireNonNull("Ikke tillat med null-verdier!");
+        //if(verdi == null)-> Kast exception
+        //else if(verdi== null)-> sett hode og hale lik null
+        //else legg til en ny node, øk antall og endringer
+        // return true
     }
 
     @Override
@@ -181,7 +185,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         //Definerer en Stringjoiner, for å klare å skille mellom tegnene, få det i denne formatet [,]
         StringJoiner sj = new StringJoiner(",","[","]");
 
-        Node<T> p = hode;
+        Node<T> p = hale;
         for(;p!=null;p=p.forrige)
             sj.add(p.verdi.toString());
         return sj.toString();
