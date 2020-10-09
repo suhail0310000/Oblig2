@@ -61,6 +61,12 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     }
 
+    private Node<T> finnNode(int indeks){
+        Node<T> p;
+       //if(antall/2>indeks) grav fra hode og loop opp til indeksen
+        // else  loop fra halen ned til indeksen
+    }
+
     public DobbeltLenketListe(T[] a) {
         //Lage en dobbeltlenketliste med verdiene fra tabellen a
         /*
@@ -117,10 +123,19 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public boolean leggInn(T verdi) {
-        //if(verdi == null)-> Kast exception
-        //else if(verdi== null)-> sett hode og hale lik null
-        //else legg til en ny node, øk antall og endringer
-        // return true
+
+        if(verdi == null){
+            Objects.requireNonNull(verdi,"Ikke tillat med null-verdier!");
+        }
+        else if(tom()){
+            hode = hale = new Node<>(verdi,null,null);
+        }
+        else{
+            hale = hale.neste = new Node<>(verdi,hale,null);
+            antall++; //øker antall med en for hver gang det legges en ny node til
+            endringer++;
+        }
+        return true;
     }
 
     @Override
@@ -238,6 +253,8 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     public static <T> void sorter(Liste<T> liste, Comparator<? super T> c) {
         throw new UnsupportedOperationException();
     }
+
+
 
 
 // class DobbeltLenketListe
