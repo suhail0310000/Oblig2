@@ -17,13 +17,12 @@ import java.util.function.Predicate;
 
 public class DobbeltLenketListe<T> implements Liste<T> {
     public static void main(String[] args){
-        DobbeltLenketListe<Integer> liste = new DobbeltLenketListe<>();
-        System.out.println(liste.toString() + " " + liste.omvendtString());
-        for (int i = 1; i <= 3; i++)
-        {
-            liste.leggInn(i);
-            System.out.println(liste.toString() + " " + liste.omvendtString());
-        }
+        Character[] c = {'A','B','C','D','E','F','G','H','I','J',};
+        DobbeltLenketListe<Character> liste = new DobbeltLenketListe<>(c);
+        System.out.println(liste.subliste(3,8)); // [D, E, F, G, H]
+        System.out.println(liste.subliste(5,5)); // []
+        System.out.println(liste.subliste(8,liste.antall())); // [I, J]
+// System.out.println(liste.subliste(0,11)); // skal kaste unntak
 
 
     }
@@ -58,6 +57,13 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         hode = hale = null;
         endringer = 0;
         antall = 0;
+
+    }
+
+    private static void fraTilKontroll(int antall,int fra, int til){
+        if(fra<0||til>antall||fra>til){
+            throw new IndexOutOfBoundsException("Illegalt intervall!");//Enten er verdien negativt->utenfor tabellen
+        }
 
     }
 
@@ -115,9 +121,17 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         }
     }
 
-
     public Liste<T> subliste(int fra, int til){
-        throw new UnsupportedOperationException();
+        fraTilKontroll(antall,fra,til); //sjekker om intervallet er gyldig
+        DobbeltLenketListe<T> liste = new DobbeltLenketListe<>(); //ny liste
+        Node<T> p = finnNode(fra); //finner noden
+
+        for(int i = fra; i<til; i++){
+            liste.leggInn(p.verdi);
+            p = p.neste;
+        }
+        return liste;
+
     }
 
     @Override
@@ -137,19 +151,15 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     public boolean leggInn(T verdi) {
         Objects.requireNonNull(verdi);
 
-        if (antall == 0) { //tom liste
+        if (hode == null && hale == null && antall == 0) { //tom liste
             hode = new Node<T>(verdi, null, null);
             hale = hode;
-            antall++;
-            endringer++;
-            return true;
         } else { //Hva skjer dersom listen ikke er tom?
             hale = hale.neste = new Node<>(verdi, hale, null);
-            antall++;
-            endringer++;
-            return true;
         }
-
+        antall++;
+        endringer++;
+        return true;
         /*if(verdi == null){
             Objects.requireNonNull(verdi,"Ikke tillat med null-verdier!");
         }
@@ -166,11 +176,13 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public void leggInn(int indeks, T verdi) {
+        Objects.requireNonNull(verdi,"Ikke tillat med null-verdier!");
+        
     }
 
     @Override
     public boolean inneholder(T verdi) {
-        throw new UnsupportedOperationException();
+        return indeksTil(verdi) != -1;
     }
 
     @Override
@@ -181,22 +193,31 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public int indeksTil(T verdi) {
-        throw new UnsupportedOperationException();
+        if(verdi == null){ //Hvis tabellen inneholder nullverdier-> ikke gyldig
+            return -1;
+        }
+
+        Node<T> nyNode = hode;
+        for(int i = 0; i<antall; i++,nyNode = nyNode.neste){
+            if(Objects.equals(nyNode.verdi,verdi))
+                return i;
+            continue;
+        }
+        return -1;
     }
 
     @Override
     public T oppdater(int indeks, T nyverdi) {
-        Objects.requireNonNull("Tabellen inneholder null-verdier"); //feilmld hvis tabellen inneholder nullverdier
-
+        //Objects.requireNonNull("Tabellen inneholder null-verdier"); //feilmld hvis tabellen inneholder nullverdier
         indeksKontroll(indeks,false);
-
+        Objects.requireNonNull(nyverdi,"Ikke tillatt med nullverdier!");
         Node<T> p = finnNode(indeks);
 
         //Bytter ut gammelverdi med ny verdi, hver gang det skjer må vi øke endringer med 1
-        T temp = p.verdi;
+        T gammelVerdi = p.verdi;
         p.verdi = nyverdi;
         endringer++;
-        return temp;
+        return gammelVerdi;
     }
 
     @Override
