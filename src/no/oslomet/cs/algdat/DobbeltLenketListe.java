@@ -17,6 +17,13 @@ import java.util.function.Predicate;
 
 public class DobbeltLenketListe<T> implements Liste<T> {
     public static void main(String[] args){
+        String[] s1 = {}, s2 = {"A"}, s3 = {null,"A",null,"B",null};
+        DobbeltLenketListe<String> l1 = new DobbeltLenketListe<>(s1);
+        DobbeltLenketListe<String> l2 = new DobbeltLenketListe<>(s2);
+        DobbeltLenketListe<String> l3 = new DobbeltLenketListe<>(s3);
+        System.out.println(l1.toString() + " " + l2.toString()
+                + " " + l3.toString() + " " + l1.omvendtString() + " "
+                + l2.omvendtString() + " " + l3.omvendtString());
 
     }
 
@@ -54,7 +61,17 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     }
 
     public DobbeltLenketListe(T[] a) {
-        this(); //Bruker konstruktøren over
+        //Lage en dobbeltlenketliste med verdiene fra tabellen a
+        /*
+            Krav-> Tabell kan ikke:
+                være tom-> kaste exception
+                if(a == 0)-> Sjekk om tabellen er null, hvis ikke -> finn første ikke-null-verdi
+                else->hvis kun nullverdier-> returnerer tom tabell
+                    //
+            tom-> kaste
+         */
+
+        this(); //Bruker konstruktøren over-> nullstiller
         Objects.requireNonNull(a, "Tabellen inneholder null-verdier!"); //tabellen a kan ikke være null
 
         if (a.length != 0) {     //Dersom tabellen er tom? Sjekk-> loop gjennom
@@ -76,42 +93,8 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             }
             hale = p;
 
-            /*while(a[i] != null){
-                    nyNode = nyNode.neste = new Node<>(a[i], nyNode, null);
-                    antall++; //øker med antall for hver ny node
-                    break;
-            }*/
         }
     }
-
-
-    //Lage en dobbeltlenketliste med verdiene fra tabellen a
-        /*
-            Krav-> Tabell kan ikke:
-                være tom-> kaste exception
-                if(a == 0)-> Sjekk om tabellen er null, hvis ikke -> finn første ikke-null-verdi
-                else->hvis kun nullverdier-> returnerer tom tabell
-                    //
-            tom-> kaste
-         */
-
-
-
-        /*
-            Sette hode først (previous må være null) og hale sist (neste må være null) VIKTIG
-            Node<T> forste = hode = new Node<>
-
-            tom tabell -> hode == hale == null
-
-
-            Løp gjennom tabell og legg inn ikke-nullverdier i nodene-> øk antallet med en hver gang
-
-
-
-         */
-
-
-
 
 
     public Liste<T> subliste(int fra, int til){
@@ -133,12 +116,12 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public boolean leggInn(T verdi) {
-        throw new UnsupportedOperationException();
+        Objects.requireNonNull("Ikke tillat med null-verdier!");
     }
 
     @Override
     public void leggInn(int indeks, T verdi) {
-        throw new UnsupportedOperationException();
+
     }
 
     @Override
@@ -179,17 +162,29 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     @Override
     public String toString() {
         //Definerer en Stringjoiner, for å klare å skille mellom tegnene, få det i denne formatet [,]
-
-
+        StringJoiner sj = new StringJoiner(",","[","]");
+        Node<T> p = hode;
         //Loope gjennom alle nodene som er forskjellige fra null-> add en node med teksformatet over
-
+        for(; p!= null; p = p.neste)
+            sj.add(p.verdi.toString());
         //returner Stringbuilderen tilslutt
+        return sj.toString();
+
+
+
+
 
     }
 
     public String omvendtString() {
         //For å travarsere arrayet er jeg litt usikker, men jeg antar å å bruke samme format som i String toString() metoden, bare bytte om litt på rekkefølge
-        
+        //Definerer en Stringjoiner, for å klare å skille mellom tegnene, få det i denne formatet [,]
+        StringJoiner sj = new StringJoiner(",","[","]");
+
+        Node<T> p = hode;
+        for(;p!=null;p=p.forrige)
+            sj.add(p.verdi.toString());
+        return sj.toString();
         //Bytte om på neste og forrige, så man går baklengs, i motsetning til forlengs
 
     }
