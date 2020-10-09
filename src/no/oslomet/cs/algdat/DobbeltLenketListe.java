@@ -76,6 +76,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
                 p = p.neste;
             }
         }
+        return p;
     }
 
     public DobbeltLenketListe(T[] a) {
@@ -109,7 +110,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
                     antall++; //øker med antall for hver ny node
                 }
             }
-            hale = p;
+            hale = p; //hale = siste node
 
         }
     }
@@ -172,13 +173,17 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public T oppdater(int indeks, T nyverdi) {
-        Objects.requireNonNull("Tabellen inneholder null-verdier"); //feilmld hvis tabellen inneholder null-verdier
+        Objects.requireNonNull("Tabellen inneholder null-verdier"); //feilmld hvis tabellen inneholder nullverdier
 
         indeksKontroll(indeks,false);
 
         Node<T> p = finnNode(indeks);
 
         //Bytter ut gammelverdi med ny verdi, hver gang det skjer må vi øke endringer med 1
+        T temp = p.verdi;
+        p.verdi = nyverdi;
+        endringer++;
+        return temp;
     }
 
     @Override
@@ -206,11 +211,6 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             sj.add(p.verdi.toString());
         //returner Stringbuilderen tilslutt
         return sj.toString();
-
-
-
-
-
     }
 
     public String omvendtString() {
