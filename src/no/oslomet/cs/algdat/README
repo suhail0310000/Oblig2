@@ -1,0 +1,46 @@
+# Arbeidsfordeling
+
+Oppgaven er levert av følgende studenter:
+* Suhail, s341868, s341868@oslomet.no
+* ...
+
+
+
+I oppgaven har vi hatt følgende arbeidsfordeling:
+Suhail har gjort oppgave 1,2,3,4
+
+Jeg har brukt git til å dokumentere arbeidet vårt. Jeg har 10 commits totalt, og hver logg-melding beskriver hvor langt jeg har kommet i oppgaven
+
+# Beskrivelse av oppgaveløsning (maks 5 linjer per oppgave)
+
+* Oppgave 1:
+Løste denne ved å implementere metodene "antall" og "tom",
+hvor den førstenevnte meotden kunne returnere antalle verdier
+og den sistnevnte kunne returnere true/false avhengig om tabellen er tom.
+Deretter deklarerte jeg konstruktøren "DobbeltLenketListe", for å ha tilgang til hode, hale og antall.
+I metoden "DoubleLenketListe" behandler jeg først null-verdier, fordi dette ikke er tillatt. Deretter lager jeg en if
+setning "if a.length!=null", for å kunne loope og hvis den bare finner null- verdier returnerer den en tom tabell.
+Tilslut finner jeg alle de ikke-nullverdiene ved den siste for-loopen med "if(a[i]!=null" og setter inn en ny node.
+
+* Oppgave 2:
+Jeg løste oppgave 2a ved å bruke Stringbuilder. Jeg prøvde å bruke Stringjoiner, for å utfordre meg selv, men karte det ikke.
+Jeg lagde en if-test i både String og omvendtString, hvor den tar for seg tabeller som ikke er tomme.
+Deretter "appender" jeg noder med på det tekstformatet som er oppgitt i obligen ved å bruke loop. "leggInn" metoden er for
+å tilføre verdier inn i tabellen, dette gjør jeg først ved å lage en if-setning, som  setter hode og hale til null, hvis den er tom osv
+og ellers appender den ny node.
+
+* Oppgave 3:
+Jeg lagde først finnNoden ved å begrense definisjonsmegnde, det ligner litt det med partisjoner. Jeg deler tabellen-
+i to ved å ta if(antall/2), så looper jeg meg oppover fra hode til denne verdien via en for loop++, og det samme fra motsatt side-
+fra halen, via en for-lopp(i--). Deretter oppdaterer jeg tabellen med nye verdier via "Oppdater"- metoden, og begrenser igjen definisjon-
+mengden ved å kaste Exception på null-verdier og tilføre nye verdier. På subliste-metoden bruker jeg metoden "fraTilKontroll" for å-
+sjekke om intevallet er gyldig, og hvis den er gyldig, looper jeg gjennom og legger til ny noder.
+
+* Oppgave 4:
+Jeg lager først "indeksTil"-metoden, ved å sjekke opp for nullverdier. Den returnerer -1, for at det ikke skal være lov med null-verdier.
+
+* Oppgave 5:
+* Oppgave 6:
+* Oppgave 7:
+* Oppgave 8:
+
