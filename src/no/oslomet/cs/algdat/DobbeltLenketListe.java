@@ -137,22 +137,17 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     public boolean leggInn(T verdi) {
         Objects.requireNonNull(verdi);
 
-        if (hode == null && hale == null && antall == 0) { //Alle betingelser for å legge inn-> tom liste
+        if (antall == 0) { //tom liste
             hode = new Node<T>(verdi, null, null);
             hale = hode;
-            endringer++;
             antall++;
-            return true;
-        } else if (antall > 0 && hale != null) { //Alle betingelser for en ikke tom liste
-            Node<T> newNode = new Node<>(verdi, hale, null);
-            hale.neste = newNode;
-            hale = newNode;
             endringer++;
-            antall++;
             return true;
-        } else {
-            return false;
-
+        } else { //Hva skjer dersom listen ikke er tom?
+            hale = hale.neste = new Node<>(verdi, hale, null);
+            antall++;
+            endringer++;
+            return true;
         }
 
         /*if(verdi == null){
