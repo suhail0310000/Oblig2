@@ -135,8 +135,27 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public boolean leggInn(T verdi) {
+        Objects.requireNonNull(verdi);
 
-        if(verdi == null){
+        if (hode == null && hale == null && antall == 0) { //Alle betingelser for å legge inn-> tom liste
+            hode = new Node<T>(verdi, null, null);
+            hale = hode;
+            endringer++;
+            antall++;
+            return true;
+        } else if (antall > 0 && hale != null) { //Alle betingelser for en ikke tom liste
+            Node<T> newNode = new Node<>(verdi, hale, null);
+            hale.neste = newNode;
+            hale = newNode;
+            endringer++;
+            antall++;
+            return true;
+        } else {
+            return false;
+
+        }
+
+        /*if(verdi == null){
             Objects.requireNonNull(verdi,"Ikke tillat med null-verdier!");
         }
         else if(tom()){
@@ -147,12 +166,11 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             antall++; //øker antall med en for hver gang det legges en ny node til
             endringer++;
         }
-        return true;
+        return true;*/
     }
 
     @Override
     public void leggInn(int indeks, T verdi) {
-
     }
 
     @Override
@@ -203,28 +221,43 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public String toString() {
-        //Definerer en Stringjoiner, for å klare å skille mellom tegnene, få det i denne formatet [,]
-        StringJoiner sj = new StringJoiner(",","[","]");
-        Node<T> p = hode;
-        //Loope gjennom alle nodene som er forskjellige fra null-> add en node med teksformatet over
-        for(; p!= null; p = p.neste)
-            sj.add(p.verdi.toString());
-        //returner Stringbuilderen tilslutt
-        return sj.toString();
+        StringBuilder sb = new StringBuilder();
+        sb.append('[');
+
+        if (!tom())
+        {
+            sb.append(hode.verdi);
+            for (Node<T> p = hode.neste; p != null; p = p.neste)
+            {
+                sb.append(',').append(' ').append(p.verdi);
+            }
+        }
+
+        sb.append(']');
+        return sb.toString();
     }
+
 
     public String omvendtString() {
-        //For å travarsere arrayet er jeg litt usikker, men jeg antar å å bruke samme format som i String toString() metoden, bare bytte om litt på rekkefølge
-        //Definerer en Stringjoiner, for å klare å skille mellom tegnene, få det i denne formatet [,]
-        StringJoiner sj = new StringJoiner(",","[","]");
+        StringBuilder sb = new StringBuilder(); //lager stringbuilder
+        sb.append('['); //Adder første klammeparantes
 
-        Node<T> p = hale;
-        for(;p!=null;p=p.forrige)
-            sj.add(p.verdi.toString());
-        return sj.toString();
-        //Bytte om på neste og forrige, så man går baklengs, i motsetning til forlengs
+        if (!tom()) //Dersom listen ikke er tom, altså inneholder verdier:
+        {
+            sb.append(hale.verdi); //Legg først verdi hale , så legger du de andrre i forhold til den
 
+            for (Node<T> p = hale.forrige; p != null; p = p.forrige)
+            {
+                sb.append(',').append(' ').append(p.verdi); //Tekstformat og legg inn
+            }
+        }
+
+        sb.append(']');
+        return sb.toString();
     }
+
+
+
 
     @Override
     public Iterator<T> iterator() {
