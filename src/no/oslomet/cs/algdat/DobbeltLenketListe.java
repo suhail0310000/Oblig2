@@ -64,7 +64,18 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     private Node<T> finnNode(int indeks){
         Node<T> p;
        //if(antall/2>indeks) grav fra hode og loop opp til indeksen
-        // else  loop fra halen ned til indeksen
+        if(antall/2 < indeks){
+            p = hale; //Looper gjennom fra høye side mot indeksen, via halen
+            for(int i = antall-1; i>indeks; i--){
+                p = p.forrige;
+            }
+        }
+        else{
+            p = hode; // else  loop fra halen ned til indeksen
+            for(int i = 0; i<indeks; i++) {
+                p = p.neste;
+            }
+        }
     }
 
     public DobbeltLenketListe(T[] a) {
@@ -150,7 +161,8 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public T hent(int indeks) {
-        throw new UnsupportedOperationException();
+        indeksKontroll(indeks,false);
+        return finnNode(indeks).verdi;
     }
 
     @Override
@@ -160,7 +172,13 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public T oppdater(int indeks, T nyverdi) {
-        throw new UnsupportedOperationException();
+        Objects.requireNonNull("Tabellen inneholder null-verdier"); //feilmld hvis tabellen inneholder null-verdier
+
+        indeksKontroll(indeks,false);
+
+        Node<T> p = finnNode(indeks);
+
+        //Bytter ut gammelverdi med ny verdi, hver gang det skjer må vi øke endringer med 1
     }
 
     @Override
