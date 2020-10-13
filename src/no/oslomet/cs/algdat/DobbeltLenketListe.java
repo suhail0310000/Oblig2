@@ -13,9 +13,11 @@ import java.util.Iterator;
 import java.util.Objects;
 import java.util.function.Predicate;
 
-
-
 public class DobbeltLenketListe<T> implements Liste<T> {
+    public static void main(String[] args){
+
+
+    }
 
     /**
      * Node class
@@ -51,10 +53,12 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     }
 
     private static void fraTilKontroll(int antall,int fra, int til){
-        if(fra<0||til>antall||fra>til){
+        if(fra<0||til>antall){
             throw new IndexOutOfBoundsException("Illegalt intervall!");//Enten er verdien negativt->utenfor tabellen
         }
-
+        if(fra>til){
+            throw new IllegalArgumentException("Illegalt intervall!");//Enten er verdien negativt->utenfor tabellen
+        }
     }
 
     private Node<T> finnNode(int indeks){
@@ -166,8 +170,26 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public void leggInn(int indeks, T verdi) {
-        Objects.requireNonNull(verdi,"Ikke tillat med null-verdier!");
+        //Fire tilfeller:
+        //1. if(tom()){ //tom liste
+        /*2. else if(indeks == antall){
+           Sett inn ny verdi på slutten av tabellen
+        }
+        /*3. else if(indeks == 0){
+               sett inn ny verdi på starten av tabellen
+            }
+         */
+        /*siste. else{
+               sett inn ny verdi
+            }
 
+            øk antall og endringer
+
+         */
+
+
+        //
+        //
     }
 
     @Override
