@@ -258,12 +258,25 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public boolean fjern(T verdi) {
-        throw new UnsupportedOperationException();
+
     }
 
     @Override
     public T fjern(int indeks) {
-        throw new UnsupportedOperationException();
+        //Utføre først indekskontrol, for å sjekke om intervallet er gyldig
+        indeksKontroll(indeks, false);
+
+        //fire tilfeller: den første fjernes, den siste fjernes, kun en verdi i tabellen, en verdi mellom to andre fjernes
+        //1. if(indeks == 0){
+        // første verdi skal fjernes
+        //}
+        //2. if(indeks == antall-1)-> Siste verdi skal fjernes
+        // 3. if(antall == 1) -> Hvis det er kun en verdi i tabellen
+        // else{
+        //Hvis en verdi mellom hode og hale fjernes
+        //}
+
+        //Mink antall (vi fjerner verdier), og øke endringer(fjerne = endring)
     }
 
     @Override
