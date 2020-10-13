@@ -53,12 +53,21 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     }
 
     private static void fraTilKontroll(int antall,int fra, int til){
-        if(fra<0||til>antall){
-            throw new IndexOutOfBoundsException("Illegalt intervall!");//Enten er verdien negativt->utenfor tabellen
+        //Tre intervaller vi må utelukkke:
+        if(fra<0){ //Fra er negativt -> utenfor tabellen
+
         }
-        if(fra>til){
-            throw new IllegalArgumentException("Illegalt intervall!");//Enten er verdien negativt->utenfor tabellen
-        }
+        if (fra < 0)                                  // fra er negativ-> ikke innenfor intervallet
+            throw new IndexOutOfBoundsException
+                    ("Fra: (" + fra + ") er negativ!");
+
+        if (til > antall)                          // til er utenfor tabellen-> ikke innenfor intervallet
+            throw new IndexOutOfBoundsException
+                    ("Til: (" + til + ") > antall(" + antall + ")");
+
+        if (fra > til)                                // fra er større enn til -> ikke innenfor intervallet
+            throw new IllegalArgumentException
+                    ("Fra: (" + fra + ") > Til: (" + til + ") - illegalt intervall!");
     }
 
     private Node<T> finnNode(int indeks){
@@ -145,6 +154,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     public boolean leggInn(T verdi) {
         Objects.requireNonNull(verdi);
 
+
         if (hode == null && hale == null && antall == 0) { //tom liste
             hode = new Node<T>(verdi, null, null);
             hale = hode;
@@ -170,26 +180,39 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public void leggInn(int indeks, T verdi) {
+        Objects.requireNonNull(verdi, "Ikke tillatt med nullverdier!");
+        indeksKontroll(indeks, true);
         //Fire tilfeller:
         //1. if(tom()){ //tom liste
-        /*2. else if(indeks == antall){
-           Sett inn ny verdi på slutten av tabellen
+        if(tom()){
+            hode = hale = new Node<>(verdi, null,null);
         }
-        /*3. else if(indeks == 0){
+         /*2. else if(indeks == 0){
                sett inn ny verdi på starten av tabellen
             }
          */
+        else if(indeks == 0){
+            hode = hode.forrige = new Node<>(verdi, null,hode);
+        }
+        /*3. else if(indeks == antall){
+           Sett inn ny verdi på slutten av tabellen
+        }
+         */
+        else if(indeks == antall){
+            hale = hale.neste = new Node<>(verdi,hale,null);
+        }
+        else{
+            Node<T> p = finnNode(indeks);
+            p.forrige = p.forrige.neste = new Node<>(verdi,p.forrige,p);
+        }
         /*siste. else{
                sett inn ny verdi
             }
-
             øk antall og endringer
-
          */
+        antall++;
+        endringer++;
 
-
-        //
-        //
     }
 
     @Override
@@ -221,8 +244,8 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     @Override
     public T oppdater(int indeks, T nyverdi) {
         //Objects.requireNonNull("Tabellen inneholder null-verdier"); //feilmld hvis tabellen inneholder nullverdier
-        indeksKontroll(indeks,false);
         Objects.requireNonNull(nyverdi,"Ikke tillatt med nullverdier!");
+        indeksKontroll(indeks,false);
         Node<T> p = finnNode(indeks);
 
         //Bytter ut gammelverdi med ny verdi, hver gang det skjer må vi øke endringer med 1
@@ -231,6 +254,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         endringer++;
         return gammelVerdi;
     }
+
 
     @Override
     public boolean fjern(T verdi) {
