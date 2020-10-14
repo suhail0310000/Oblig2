@@ -258,27 +258,85 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public boolean fjern(T verdi) {
+        if(verdi==null){
+            return false;
+        }
+        Node<T>node = hode;
+        if(verdi.equals(node.verdi)){
+            if(node.neste == null){
+                hode=hale=null;
+            }else {
+                hode=node.neste;
+                hode.forrige=null;
+            }
+            antall--;
+            endringer++;
+            return true;
+        }
+        node = hale;
+        if(verdi.equals(node.verdi)){
+            hale=node.forrige;
+            hale.neste=null;
+            antall--;
+            endringer++;
+            return true;
+        }
+        node = hode.neste;
+        for(; node != null; node = node.neste){
+            if(verdi.equals(node.verdi)){
+                node.forrige.neste = node.neste;
+                node.neste.forrige = node.forrige;
+                antall--;
+                endringer++;
+                return true;
+            }
+        }
+        return false;
 
     }
 
     @Override
     public T fjern(int indeks) {
-        //Utføre først indekskontrol, for å sjekke om intervallet er gyldig
         indeksKontroll(indeks, false);
-
+        //Utføre først indekskontrol, for å sjekke om intervallet er gyldig
+        indeksKontroll(indeks,false);
+        Node<T> node = hode;
+        T verdi;
         //fire tilfeller: den første fjernes, den siste fjernes, kun en verdi i tabellen, en verdi mellom to andre fjernes
         //1. if(indeks == 0){
         // første verdi skal fjernes
         //}
-        //2. if(indeks == antall-1)-> Siste verdi skal fjernes
-        // 3. if(antall == 1) -> Hvis det er kun en verdi i tabellen
-        // else{
-        //Hvis en verdi mellom hode og hale fjernes
-        //}
+        if(indeks == 0){
+            verdi = node.verdi;
+            if(node.neste==null){
+                hode=hale = null;
+            }else {
+                hode=node.neste;
+                hode.forrige=null;
+            }
+        }
+
+        else if(indeks == antall-1){ //Hvis siste verdi skal fjernes
+            verdi = hale.verdi;
+            node=hale;
+            hale=node.forrige;
+            hale.neste=null;
+        }
+
+        else {
+            for(int i = 0; i<indeks; i++){  //Hvis en verdi mellom hode og hale fjernes
+                node=node.neste;
+            }
+            verdi = node.verdi;
+            node.forrige.neste=node.neste;
+            node.neste.forrige=node.forrige;
+        }
 
         //Mink antall (vi fjerner verdier), og øke endringer(fjerne = endring)
+        antall--;
+        endringer++;
+        return verdi;
     }
-
     @Override
     public void nullstill() {
         throw new UnsupportedOperationException();
