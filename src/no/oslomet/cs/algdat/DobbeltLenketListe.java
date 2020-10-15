@@ -400,11 +400,14 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         private DobbeltLenketListeIterator(){
             denne = hode;     // p starter på den første i listen
             fjernOK = false;  // blir sann når next() kalles
-            iteratorendringer = endringer;  // teller endringer
+            iteratorendringer = endringer;  // teller endringer som blir foretatt
         }
 
         private DobbeltLenketListeIterator(int indeks){
-            throw new UnsupportedOperationException();
+            //indeksKontroll(indeks,false);
+            denne = finnNode(indeks); //denne settes til noden med gitt indeks
+            fjernOK = false;  // blir sann når next() kalles
+            iteratorendringer = endringer;  // teller endringer
         }
 
         @Override
@@ -414,7 +417,19 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
         @Override
         public T next(){
-            throw new UnsupportedOperationException();
+            //Sjekke om iteratorendringer er lik endringer, hvis ikke> ConcurrentModificationException
+            if(iteratorendringer != endringer){
+                throw new ConcurrentModificationException("Listen er endret");
+            }
+
+            //hvis ikke det er flere i listen kast-> NoSuchElementException
+            if(!hasNext()){
+                throw new NoSuchElementException("Ingen verdier!");
+            }
+
+
+            //Sette fjernOk til true/false, returnere denne og denne flyttes til neste node
+
         }
 
         @Override
