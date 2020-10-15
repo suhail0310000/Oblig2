@@ -14,10 +14,6 @@ import java.util.Objects;
 import java.util.function.Predicate;
 
 public class DobbeltLenketListe<T> implements Liste<T> {
-    public static void main(String[] args){
-
-
-    }
 
     /**
      * Node class
@@ -339,7 +335,10 @@ public class DobbeltLenketListe<T> implements Liste<T> {
     }
     @Override
     public void nullstill() {
-        throw new UnsupportedOperationException();
+        this.hode = null;
+        this.hale = null;
+        antall = 0;
+        endringer++;
     }
 
     @Override
@@ -379,16 +378,14 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         return sb.toString();
     }
 
-
-
-
     @Override
     public Iterator<T> iterator() {
-        throw new UnsupportedOperationException();
+        return new DobbeltLenketListeIterator();
     }
 
     public Iterator<T> iterator(int indeks) {
-        throw new UnsupportedOperationException();
+        indeksKontroll(indeks,false);
+        return new DobbeltLenketListeIterator(indeks);
     }
 
     private class DobbeltLenketListeIterator implements Iterator<T>
@@ -417,19 +414,18 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
         @Override
         public T next(){
-            //Sjekke om iteratorendringer er lik endringer, hvis ikke> ConcurrentModificationException
             if(iteratorendringer != endringer){
                 throw new ConcurrentModificationException("Listen er endret");
             }
 
-            //hvis ikke det er flere i listen kast-> NoSuchElementException
             if(!hasNext()){
                 throw new NoSuchElementException("Ingen verdier!");
             }
 
-
-            //Sette fjernOk til true/false, returnere denne og denne flyttes til neste node
-
+            fjernOK = true; //Verdi fjernet
+            T nåværendeVerdi = denne.verdi; //Holde på verdien "denne.verdi"
+            denne=denne.neste; // flytter "denne" noden til neste
+            return nåværendeVerdi; //returnerer hjelpevariabelen som ble brukt for å holde på "denne"
         }
 
         @Override
