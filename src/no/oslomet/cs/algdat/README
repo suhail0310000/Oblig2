@@ -7,7 +7,7 @@ Oppgaven er levert av følgende studenter:
 
 
 I oppgaven har vi hatt følgende arbeidsfordeling:
-Suhail har gjort oppgave 1,2,3,4
+Suhail har gjort oppgave 1,2,3,4,5,6,8
 
 Jeg har brukt git til å dokumentere arbeidet vårt. Jeg har 10 commits totalt, og hver logg-melding beskriver hvor langt jeg har kommet i oppgaven
 
@@ -37,10 +37,28 @@ mengden ved å kaste Exception på null-verdier og tilføre nye verdier. På sub
 sjekke om intevallet er gyldig, og hvis den er gyldig, looper jeg gjennom og legger til ny noder.
 
 * Oppgave 4:
-Jeg lager først "indeksTil"-metoden, ved å sjekke opp for nullverdier. Den returnerer -1, for at det ikke skal være lov med null-verdier.
+Jeg lager først "indeksTil"-metoden, for å returnere indeksen/posisjonen til "verdi",
+ hvis den finnes i listen og returnere -1, hvis den ikke finnes.
+Siden null ikke finnes i listen, returnere vi -1.
+Deretter lager vi en for-loop for å kjøre gjennom, og returnere verdien (den første hvis den har flere forekomster).
+Tilslutt lager vi metoden "boolean inneholder", som bruker "indekstil" metoden for å returnere true hvis listen inneholder en verdi
 
 * Oppgave 5:
+Jeg løste oppgave 5 ved å først lage en if-setning:(hode == null && hale == null && antall == 0) i "leggInn"-metoden,
+som utelukker alle intervaller for tom-liste. Deretter i else legger jeg inn en ny node.
+På bakgrunn av dette peker pekerne riktig-> hode og hale på null når listen er tom.
+
 * Oppgave 6:
-* Oppgave 7:
+Jeg løste oppgave 6 ved hovedsaklig hjelp av to metoder, nemlig "T fjern(int indeks)" og "boolean fjern(T verdi)". I begge metodene må jeg-
+passe på alle tilfellene(se kildekode). Det første jeg gjør i den førstnevnte metoden er å utelukke ugyldige intervaller ved å bruke "indekskontroll".
+Deretter bruker jeg if-setninger for å dekke ovver alle de fire tilfellene. I den sistnevnte metoden "Boolean fjern(T verdi)" tar jeg for meg alle-
+scenarioene, som for eksempel i den siste for-loopen kjører jeg gjennom tabellen for alle ikke-nullverdier og i else returnerer jeg "false"-
+fordi de resterende har nullverdier i seg, dermed skal det ikke kastes exception, men "return false" som oppgaven sier.
+
 * Oppgave 8:
+Oppgave 8 var en relativ simpel oppgave som ble løst kun ved å følge steg for steg i oppgaven. I "T next"- bruker jeg to if-setninger-
+((!hasNext()), (iteratorendringer != endringer)-> førstnevnte-> for å sjekke om om det er flere i listen (!hasNext)-> kast NoSuchElementException-
+sistnevnte->sjekke om iteratorendringer er lik endringer ((iteratorendringer != endringer)-> kast ConcurrentModificationException.
+Deretter fjerner jeg verdien, og bruker en hjelpevariabel for å holde på "denne.verdi", som blir returnert tilslutt. . De resterende
+metodene gikk hovedsaklig ut på å gjøre indekskontroll sjekke hvilke intervaller som er gyldig
 

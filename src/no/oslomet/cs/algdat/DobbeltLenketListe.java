@@ -148,7 +148,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
 
     @Override
     public boolean leggInn(T verdi) {
-        Objects.requireNonNull(verdi);
+        Objects.requireNonNull(verdi,"Ikke tillatt med null-verdier");
 
 
         if (hode == null && hale == null && antall == 0) { //tom liste
@@ -229,7 +229,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         }
 
         Node<T> nyNode = hode;
-        for(int i = 0; i<antall; i++,nyNode = nyNode.neste){
+        for(int i = 0; i<antall; i++,nyNode = nyNode.neste){ //Kjører gjennom nodene
             if(Objects.equals(nyNode.verdi,verdi))
                 return i;
             continue;
@@ -297,13 +297,13 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         //Utføre først indekskontrol, for å sjekke om intervallet er gyldig
         indeksKontroll(indeks,false);
         Node<T> node = hode;
-        T verdi;
+        T nåværendeVerdi;
         //fire tilfeller: den første fjernes, den siste fjernes, kun en verdi i tabellen, en verdi mellom to andre fjernes
         //1. if(indeks == 0){
         // første verdi skal fjernes
         //}
         if(indeks == 0){
-            verdi = node.verdi;
+            nåværendeVerdi = node.verdi;
             if(node.neste==null){
                 hode=hale = null;
             }else {
@@ -313,7 +313,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         }
 
         else if(indeks == antall-1){ //Hvis siste verdi skal fjernes
-            verdi = hale.verdi;
+            nåværendeVerdi = hale.verdi;
             node=hale;
             hale=node.forrige;
             hale.neste=null;
@@ -323,7 +323,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             for(int i = 0; i<indeks; i++){  //Hvis en verdi mellom hode og hale fjernes
                 node=node.neste;
             }
-            verdi = node.verdi;
+            nåværendeVerdi = node.verdi;
             node.forrige.neste=node.neste;
             node.neste.forrige=node.forrige;
         }
@@ -331,7 +331,7 @@ public class DobbeltLenketListe<T> implements Liste<T> {
         //Mink antall (vi fjerner verdier), og øke endringer(fjerne = endring)
         antall--;
         endringer++;
-        return verdi;
+        return nåværendeVerdi;
     }
     @Override
     public void nullstill() {
